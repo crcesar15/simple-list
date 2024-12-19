@@ -19,7 +19,6 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
-app.component('BButton', BButton);
+import ExampleComponent from './components/SimpleList.vue';
+app.component('simple-list', ExampleComponent);
 app.mount('#app');
