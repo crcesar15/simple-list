@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:sanctum', 'as' => 'api.'], function () {
     Route::get('/items', [ItemsController::class, 'index'])->name('items.index');
+    Route::post('/items', [ItemsController::class, 'store'])->name('items.store');
 });

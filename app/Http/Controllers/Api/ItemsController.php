@@ -27,4 +27,26 @@ class ItemsController extends Controller
 
         return response()->json($query->get());
     }
+
+    /**
+     * Create a new item.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'code' => 'required|numeric',
+            'status' => 'required|in:Active,Inactive',
+        ]);
+
+        $item = Item::create([
+            'uuid' => (string) \Str::uuid(),
+            'name' => $request->name,
+            'code' => $request->code,
+            'description' => $request->description ?? null,
+            'status' => $request->status,
+        ]);
+
+        return response()->json($item, 201);
+    }
 }
