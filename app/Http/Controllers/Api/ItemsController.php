@@ -57,4 +57,25 @@ class ItemsController extends Controller
 
         return response()->json($item, 201);
     }
+
+    /**
+     * Update an item.
+     */
+    public function update(Request $request, Item $item)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'code' => 'required|numeric',
+            'status' => 'required|in:Active,Inactive',
+        ]);
+
+        $item->update([
+            'name' => $request->name,
+            'code' => $request->code,
+            'description' => $request->description ?? null,
+            'status' => $request->status,
+        ]);
+
+        return response()->json($item);
+    }
 }
