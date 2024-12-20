@@ -49,6 +49,7 @@
                 size="sm"
                 variant="link"
                 title="edit"
+                @click="getItem(data.item.id)"
               >
                 <i class="fa fa-pencil" />
               </BButton>
@@ -161,6 +162,16 @@ export default {
           console.log(error);
         });
     },
+    getItem(id) {
+      axios.get(route("api.items.show", id))
+        .then((response) => {
+          this.selectedItem = response.data;
+          this.editorToggle = true;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     addItem() {
       this.selectedItem = {};
       this.editorToggle = true;
@@ -178,6 +189,23 @@ export default {
           this.showToast = true;
           this.toastTitle = "Success";
           this.toastMessage = "Item created successfully";
+          this.toastVariant = "success";
+          this.editorToggle = false;
+          this.fetch();
+        })
+        .catch((error) => {
+          this.showToast = true;
+          this.toastTitle = "Error";
+          this.toastMessage = error.response.data.message;
+          this.toastVariant = "danger";
+        });
+    },
+    updateItem(id, data) {
+      axios.put(route("api.items.update", id), data)
+        .then(() => {
+          this.showToast = true;
+          this.toastTitle = "Success";
+          this.toastMessage = "Item updated successfully";
           this.toastVariant = "success";
           this.editorToggle = false;
           this.fetch();

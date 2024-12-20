@@ -101,10 +101,10 @@ export default {
   watch: {
     item: {
       handler() {
-        this.name = this.item.name;
-        this.description = this.item.description;
-        this.code = this.item.code;
-        this.status = this.item.status ?? "Active";
+        this.name = this.item?.name || "";
+        this.description = this.item?.description || "";
+        this.code = this.item?.code || "";
+        this.status = this.item?.status || "Active";
 
         if (this.item.id) {
           this.title = "Edit Item";
