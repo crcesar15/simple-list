@@ -8,7 +8,8 @@
       <BButton
         variant="success"
         style="height: 35px;"
-        @click="create"
+        title="Add new item"
+        @click="addItem"
       >
         <i class="fa fa-plus" /> ITEM
       </BButton>
@@ -63,13 +64,36 @@
         </div>
       </div>
     </div>
+    <ItemEditor
+      :item="selectedItem"
+      :show-modal="editorToggle"
+      @clearSelection="selectedItem = {}; editorToggle = false;"
+      @submitted="saveItem"
+    />
+    <Teleport to="body">
+      <div
+        class="toast-container position-fixed p-3 top-0 end-0"
+      >
+        <BToast
+          :show="showToast"
+          :text-variant="toastVariant"
+          @hidden="showToast = false"
+        >
+          <template #title>
+            {{ toastTitle }}
+          </template>
+          {{ toastMessage }}
+        </BToast>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script>
 import {
-  BTable, BButton, BFormRadioGroup, BFormInput,
+  BTable, BButton, BFormRadioGroup, BFormInput, BToast,
 } from "bootstrap-vue-next";
+import ItemEditor from "./ItemEditor.vue";
 
 export default {
   components: {
@@ -77,6 +101,8 @@ export default {
     BButton,
     BFormRadioGroup,
     BFormInput,
+    BToast,
+    ItemEditor,
   },
   data() {
     return {
@@ -95,6 +121,12 @@ export default {
         { text: "Inactive", value: "inactive" },
       ],
       filter: "",
+      selectedItem: {},
+      editorToggle: false,
+      showToast: false,
+      toastTitle: "",
+      toastMessage: "",
+      toastVariant: "",
     };
   },
   watch: {
@@ -127,6 +159,34 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+        });
+    },
+    addItem() {
+      this.selectedItem = {};
+      this.editorToggle = true;
+    },
+    saveItem(id, data) {
+      if (id) {
+        this.updateItem(id, data);
+      } else {
+        this.createItem(data);
+      }
+    },
+    createItem(data) {
+      axios.post(route("api.items.store"), data)
+        .then(() => {
+          this.showToast = true;
+          this.toastTitle = "Success";
+          this.toastMessage = "Item created successfully";
+          this.toastVariant = "success";
+          this.editorToggle = false;
+          this.fetch();
+        })
+        .catch((error) => {
+          this.showToast = true;
+          this.toastTitle = "Error";
+          this.toastMessage = error.response.data.message;
+          this.toastVariant = "danger";
         });
     },
   },
