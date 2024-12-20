@@ -78,4 +78,14 @@ class ItemsController extends Controller
 
         return response()->json($item);
     }
+
+    /**
+     * Delete an item.
+     */
+    public function destroy(Item $item)
+    {
+        $item->delete();
+
+        return response()->json(null, 204);
+    }
 }

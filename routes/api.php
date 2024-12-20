@@ -24,4 +24,5 @@ Route::group(['middleware' => 'auth:sanctum', 'as' => 'api.'], function () {
     Route::get('/items/{item}', [ItemsController::class, 'show'])->name('items.show');
     Route::post('/items', [ItemsController::class, 'store'])->name('items.store');
     Route::put('/items/{item}', [ItemsController::class, 'update'])->name('items.update');
+    Route::delete('/items/{item}', [ItemsController::class, 'destroy'])->name('items.destroy');
 });
