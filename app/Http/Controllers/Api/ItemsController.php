@@ -20,9 +20,9 @@ class ItemsController extends Controller
         }
 
         if ($request->has('filter')) {
-            $filterBy = $request->has('filter') ? $request->filter : 'name';
+            $filterBy = $request->has('filter_by') ? $request->filter_by : 'name';
 
-            $query->where($filterBy, 'like', "%{$request->name}%");
+            $query->where($filterBy, 'like', "%{$request->filter}%");
         }
 
         return response()->json($query->get());

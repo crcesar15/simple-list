@@ -1,9 +1,32 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
+      <div
+        id="filters"
+        class="d-flex justify-content-between pb-2 mb-2"
+      >
+        <BFormInput
+          v-model="filter"
+          placeholder="Filter by name"
+          size="sm"
+          style="height: 30px; width: 200px;"
+        />
+        <BFormRadioGroup
+          v-model="status"
+          button-variant="outline-primary"
+          :options="statusFilters"
+          size="sm"
+          style="height: 30px;"
+          buttons
+        />
+      </div>
       <BTable
+        id="items-table"
         :fields="columns"
         :items="items"
+
+        responsive
+        bordered
       >
         <template #cell(actions)="data">
           <BButton
@@ -27,13 +50,16 @@
 </template>
 
 <script>
-import axios from "axios";
-import { BTable, BButton } from "bootstrap-vue-next";
+import {
+  BTable, BButton, BFormRadioGroup, BFormInput,
+} from "bootstrap-vue-next";
 
 export default {
   components: {
     BTable,
     BButton,
+    BFormRadioGroup,
+    BFormInput,
   },
   data() {
     return {
@@ -45,7 +71,22 @@ export default {
         { key: "actions", label: "Actions" },
       ],
       items: [],
+      status: null,
+      statusFilters: [
+        { text: "All", value: null },
+        { text: "Active", value: "active" },
+        { text: "Inactive", value: "inactive" },
+      ],
+      filter: "",
     };
+  },
+  watch: {
+    status() {
+      this.fetch();
+    },
+    filter() {
+      this.fetch();
+    },
   },
   mounted() {
     this.fetch();
@@ -53,7 +94,17 @@ export default {
   methods: {
     fetch() {
       // Fetch data from API
-      axios.get(route("api.items.index"))
+      const params = {};
+
+      if (this.status) {
+        params.status = this.status;
+      }
+
+      if (this.filter) {
+        params.filter = this.filter;
+      }
+
+      axios.get(route("api.items.index", params))
         .then((response) => {
           this.items = response.data;
         })
@@ -64,3 +115,9 @@ export default {
   },
 };
 </script>
+
+<style >
+#items-table th {
+  min-width: 135px;
+}
+</style>
