@@ -29,6 +29,14 @@ class ItemsController extends Controller
     }
 
     /**
+     * Show an item.
+     */
+    public function show(Item $item)
+    {
+        return response()->json($item);
+    }
+
+    /**
      * Create a new item.
      */
     public function store(Request $request)
