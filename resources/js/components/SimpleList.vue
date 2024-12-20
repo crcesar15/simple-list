@@ -57,6 +57,7 @@
                 size="sm"
                 variant="link"
                 title="delete"
+                @click="deleteItem(data.item.id)"
               >
                 <i class="fa fa-trash" />
               </BButton>
@@ -216,6 +217,24 @@ export default {
           this.toastMessage = error.response.data.message;
           this.toastVariant = "danger";
         });
+    },
+    deleteItem(id) {
+      if (confirm("Are you sure you want to delete this item?")) {
+        axios.delete(route("api.items.destroy", id))
+          .then(() => {
+            this.showToast = true;
+            this.toastTitle = "Success";
+            this.toastMessage = "Item deleted successfully";
+            this.toastVariant = "success";
+            this.fetch();
+          })
+          .catch((error) => {
+            this.showToast = true;
+            this.toastTitle = "Error";
+            this.toastMessage = error.response.data.message;
+            this.toastVariant = "danger";
+          });
+      }
     },
   },
 };
