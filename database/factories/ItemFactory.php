@@ -19,8 +19,8 @@ class ItemFactory extends Factory
         return [
             'uuid' => $this->faker->uuid,
             'name' => $this->faker->name,
-            'description' => $this->faker->text,
-            'code' => $this->faker->word,
+            'description' => $this->faker->text(20),
+            'code' => $this->faker->randomNumber(6),
             'status' => $this->faker->randomElement(['Active', 'Inactive']),
         ];
     }
