@@ -1,50 +1,67 @@
 <template>
   <div class="container">
-    <div class="row justify-content-center">
-      <div
-        id="filters"
-        class="d-flex justify-content-between pb-2 mb-2"
+    <div
+      id="filters"
+      class="d-flex justify-content-between mb-2"
+    >
+      <h3>Simple List</h3>
+      <BButton
+        variant="success"
+        style="height: 35px;"
+        @click="create"
       >
-        <BFormInput
-          v-model="filter"
-          placeholder="Filter by name"
-          size="sm"
-          style="height: 30px; width: 200px;"
-        />
-        <BFormRadioGroup
-          v-model="status"
-          button-variant="outline-primary"
-          :options="statusFilters"
-          size="sm"
-          style="height: 30px;"
-          buttons
-        />
-      </div>
-      <BTable
-        id="items-table"
-        :fields="columns"
-        :items="items"
+        <i class="fa fa-plus" /> ITEM
+      </BButton>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <div
+            id="filters"
+            class="d-flex justify-content-between pb-2 mb-2"
+          >
+            <BFormInput
+              v-model="filter"
+              placeholder="Filter by name"
+              size="sm"
+              style="height: 30px; width: 200px;"
+            />
+            <BFormRadioGroup
+              v-model="status"
+              button-variant="outline-primary"
+              :options="statusFilters"
+              size="sm"
+              style="height: 30px;"
+              buttons
+            />
+          </div>
+          <BTable
+            id="items-table"
+            :fields="columns"
+            :items="items"
 
-        responsive
-        bordered
-      >
-        <template #cell(actions)="data">
-          <BButton
-            size="sm"
-            variant="link"
-            title="edit"
+            responsive
+            bordered
           >
-            <i class="fa fa-pencil" />
-          </BButton>
-          <BButton
-            size="sm"
-            variant="link"
-            title="delete"
-          >
-            <i class="fa fa-trash" />
-          </BButton>
-        </template>
-      </BTable>
+            <template #cell(actions)="data">
+              <BButton
+                size="sm"
+                variant="link"
+                title="edit"
+              >
+                <i class="fa fa-pencil" />
+              </BButton>
+              <BButton
+                size="sm"
+                variant="link"
+                title="delete"
+              >
+                <i class="fa fa-trash" />
+              </BButton>
+            </template>
+          </BTable>
+        </div>
+      </div>
     </div>
   </div>
 </template>
